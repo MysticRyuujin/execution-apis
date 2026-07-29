@@ -1,9 +1,9 @@
 mkdir -p chain/
 ./hivechain generate \
     -outdir chain/       \
-    -length 54           \
+    -length 60           \
     -tx-count 4          \
     -tx-interval 1       \
     -fork-interval 3     \
-    -lastfork bpo2       \
+    -lastfork amsterdam  \
     -outputs genesis,chain,forkenv,headstate,txinfo,accounts,headfcu
