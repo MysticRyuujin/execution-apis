@@ -43,10 +43,11 @@ go build -o /tmp/hive-bin .
 /tmp/hive-bin --sim ethereum/rpc-compat --client-file clients-devnet7.yaml --client go-ethereum
 ```
 
-**4. Run the cross-client matrix** (~15 min). Add the other five clients. Expect go-ethereum
-252/252, besu / Nethermind / reth importing the chain and running the full suite with divergences,
-and Erigon / ethrex failing to launch. Per-client totals matter more than the aggregate: a client
-that fails to launch shows `total=1`.
+**4. Run the cross-client matrix** (~15 min). Add besu, Nethermind and reth — they import the chain
+and run the full suite with divergences, against go-ethereum's 252/252. Erigon still fails to
+launch (erigontech/erigon#22896) and ethrex is excluded entirely, for the reason under *Known
+failures*. Per-client totals matter more than the aggregate: a client that fails to launch shows
+`total=1`.
 
 **5. Read a divergence properly.** A failure means "differs from a geth-generated fixture", not
 "the client is wrong" — see *Adjudicating divergences* below before reporting anything as a client
@@ -82,7 +83,7 @@ and besu 1012/1013 on the devnet-7 BAL suite. Recipe in *Running the EEST BAL ve
 - **#855** — the callTracer spec has two open items: a nod on the optional `debug_traceCall` block
   param, and whether `logs[].index` should stay undefined.
 - **Client-side gaps found here.** Filed: Erigon rejects `engine_forkchoiceUpdatedV4`'s third
-  parameter (erigontech/erigon#22896). Not yet filed: besu ignores `onlyTopCall`; reth returns
+  parameter (erigontech/erigon#22896), ethrex the same (lambdaclass/ethrex#7074). Not yet filed: besu
   `-32001` where the reference returns `-32000` on an out-of-range block; besu answers an invalid
   pre-fork BAL payload with a JSON-RPC error rather than an invalid payload status.
 
@@ -191,6 +192,36 @@ Two clients cannot launch, for reasons unrelated to this branch: **Erigon** reje
 three parameters including `custodyColumns` (erigontech/erigon#22896), and **ethrex** fails header
 validation with `Base fee per gas is incorrect`.
 
+**ethrex is excluded from the matrix for now, and it has two independent problems.**
+
+What stops it launching is the *same* bug as Erigon's: it rejects `engine_forkchoiceUpdatedV4`'s
+third parameter, with `Invalid params: Expected 2 or 1 params` (lambdaclass/ethrex#7074). Because the simulator's
+`client launch` test fails only when the client returns an *error* to that call — a `SYNCING`
+status would pass — the launch is judged failed and no tests run.
+
+Underneath that, `ethrex import` fails at **block 1** with `Base fee per gas is incorrect`, and
+that one is by design rather than a defect: ethrex supports post-merge networks only
+(lambdaclass/ethrex#5504, "We don't support pre merge forks"), and lambdaclass/ethrex#7055 is
+deliberately making `base_fee_per_gas` a required header field for every fork it validates. This
+chain has 26 pre-London blocks (London at block 27), so none of them can import. ethrex already
+tracks the consequence for this exact suite in lambdaclass/ethrex#6954 — their CI pins
+`rpc-compat` to an old execution-apis commit precisely because the shared fixture chain became
+pre-merge.
+
+It is not specific to this branch: the upstream test chain has the identical fork layout
+(`londonBlock: 27`, `mergeNetsplitBlock: 36`), which is why ethrex fails most of the default
+`rpc-compat` suite too — there it launches only because that chain's `headfcu.json` calls
+`forkchoiceUpdatedV3`, whose two parameters it accepts, after which it serves a genesis-only
+chain.
+
+So the legitimate route to testing ethrex against this suite is a merged-from-genesis chain
+(`hivechain -pos`, which schedules every pre-merge fork at block zero), not a change to ethrex.
+That is a second fixture set with reduced coverage — no uncles, no pre-London blocks, no early
+fork boundaries — rather than a reconfiguration of this one, which is why it is out of scope here.
+
+Run the other clients explicitly rather than relying on ethrex failing harmlessly, since a launch
+failure only shows up as `total=1` in the results.
+
 An earlier revision produced an activation block only go-ethereum would accept. That was geth's
 EIP-7997 handling — with the deterministic factory contract absent from state, devnet-7 geth
 inserts it at the start of the first Amsterdam block, which no other client does, so the access
@@ -229,7 +260,9 @@ block's `gasUsed` as `0x0` while the call it contains used `0x4398`, which looks
 | ethereum/hive#1587, #1588 | rebase ethereum/hive#1589 onto master once they merge |
 | ethereum/execution-specs#3261 | EIP-8282 BAL vectors, confirmed as a real gap and accepted upstream; test the six clients against them once they exist |
 | geth devnet-8 | drops the EIP-7997 fork-boundary insertion, at which point seeding the contract in genesis is no longer load-bearing |
-| erigontech/erigon#22896, ethrex base-fee validation | the two remaining launch failures; the matrix goes from four clients to six |
+| erigontech/erigon#22896 | Erigon's launch failure; fixing it takes the matrix from four clients to five |
+| lambdaclass/ethrex#7074 | lets ethrex launch — but it will then fail most tests, since it still cannot import a pre-merge chain |
+| a merged-from-genesis (`-pos`) fixture set, or lambdaclass/ethrex#6954 | the only routes to meaningful ethrex coverage; ethrex supports post-merge only by design |
 | #851 | BAL getter semantics; merge in |
 | geth implementing the BAL RPC getters | then add testgen generators — today `eth_getBlockAccessList` and `debug_getRawBlockAccessList` both return `-32601`, so fixtures are impossible |
 | #852 | EIP-8037 two-dimensional gas in tracing; overlaps the callTracer spec, so whichever lands second rebases onto the first |
