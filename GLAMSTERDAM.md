@@ -83,9 +83,10 @@ and besu 1012/1013 on the devnet-7 BAL suite. Recipe in *Running the EEST BAL ve
 - **#855** — the callTracer spec has two open items: a nod on the optional `debug_traceCall` block
   param, and whether `logs[].index` should stay undefined.
 - **Client-side gaps found here.** Filed: Erigon rejects `engine_forkchoiceUpdatedV4`'s third
-  parameter (erigontech/erigon#22896), ethrex the same (lambdaclass/ethrex#7074). Not yet filed: besu
-  `-32001` where the reference returns `-32000` on an out-of-range block; besu answers an invalid
-  pre-fork BAL payload with a JSON-RPC error rather than an invalid payload status.
+  parameter (erigontech/erigon#22896), and ethrex the same (lambdaclass/ethrex#7074). Not yet
+  filed: besu ignores `onlyTopCall`; reth returns `-32001` where the reference returns `-32000` on
+  an out-of-range block; besu answers an invalid pre-fork BAL payload with a JSON-RPC error rather
+  than an invalid payload status.
 
 ## What it adds on top of `main`
 
