@@ -1,0 +1,102 @@
+block 58 (0x8f7aa85011e9a819e0b08a3d646e0876ff02a7d189d104aaf9260d39b7b9f5d0), timestamp 580
+header blockAccessListHash: 0x2879d44fd6e1857a5730e123497f3b5c37d68e5013edafa866bf3f5837e71f19
+hash of list below:         0x2879d44fd6e1857a5730e123497f3b5c37d68e5013edafa866bf3f5837e71f19
+
+0000000000000000000000000000000000000000:
+    storage changes:
+    storage reads:
+    balance changes:
+        1: 142312500000106168853
+        2: 142312500000106189853
+        3: 142312500000106289853
+        4: 142312500000106301853
+    nonce changes:
+    code changes:
+00000961ef480eb55e80d19ad83579a64c007002:
+    storage changes:
+    storage reads:
+        0x0
+        0x1
+        0x2
+        0x3
+    balance changes:
+    nonce changes:
+    code changes:
+000064d678505ad48f8ccb093bc65613800e8282:
+    storage changes:
+    storage reads:
+        0x0
+        0x1
+        0x2
+        0x3
+    balance changes:
+    nonce changes:
+    code changes:
+0000bbddc7ce488642fb579f8b00f3a590007251:
+    storage changes:
+    storage reads:
+        0x0
+        0x1
+        0x2
+        0x3
+    balance changes:
+    nonce changes:
+    code changes:
+0000bff46984e3725691fa540a8c7589300d8282:
+    storage changes:
+    storage reads:
+        0x0
+        0x1
+        0x2
+        0x3
+    balance changes:
+    nonce changes:
+    code changes:
+0000f90827f1c53a10cb7a02335b175320002935:
+    storage changes:
+        0x39:
+            0: 0xb7212b75f7aee6ea273ade86b729851be7c13d833bf7273effed0982181abe96
+    storage reads:
+    balance changes:
+    nonce changes:
+    code changes:
+000f3df6d732807ef1319fb7b8bb8522d0beac02:
+    storage changes:
+        0x244:
+            0: 0x244
+        0x2243:
+            0: 0x47c896f5986ec29f58ec60eec56ed176910779e9fc9cf45c3c090126aeb21acd
+    storage reads:
+    balance changes:
+    nonce changes:
+    code changes:
+4340ee1b812acb40a1eb561c019c327b243b92df:
+    storage changes:
+    storage reads:
+    balance changes:
+        2: 1000000000000000000000000000000000002
+    nonce changes:
+    code changes:
+7435ed30a8b4aeb0877cef0c6e8cffe834eb865f:
+    storage changes:
+    storage reads:
+    balance changes:
+        1: 999999999999999998998185084335776756
+        2: 999999999999999998998184745795175755
+        3: 999999999999999998998183133697075755
+        4: 999999999999999998998182940245303755
+    nonce changes:
+        1: 262
+        2: 263
+        3: 264
+        4: 265
+    code changes:
+7dcd17433742f4c0ca53122ab541d0ba67fc27df:
+    storage changes:
+    storage reads:
+        0x0
+        0x1cf2c0c04076fbdbfbba3ac84de0ac4a46892104cfa5b0d91b4cdf36c0632f56
+        0x89823c8ffa7a2947d32d930fbf8e529b9856d87ffd9a879a4f754d17e49d860c
+    balance changes:
+    nonce changes:
+    code changes:

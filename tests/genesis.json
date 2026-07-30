@@ -110,6 +110,11 @@
     "4dde844b71bcdf95512fb4dc94e84fb67b512ed8": {
       "balance": "0xc097ce7bc90715b34b9f1000000000"
     },
+    "4e59b44847b379578588920ca78fbf26c0b4956c": {
+      "code": "0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe03601600081602082378035828234f58015156039578182fd5b8082525050506014600cf3",
+      "balance": "0x0",
+      "nonce": "0x1"
+    },
     "5f552da00dfb4d3749d9e62dcee3c918855a86a0": {
       "balance": "0xc097ce7bc90715b34b9f1000000000"
     },

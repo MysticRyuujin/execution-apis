@@ -43,22 +43,20 @@ go build -o /tmp/hive-bin .
 /tmp/hive-bin --sim ethereum/rpc-compat --client-file clients-devnet7.yaml --client go-ethereum
 ```
 
-**4. Reproduce the BAL divergence** (~30 min). Add the other five clients. besu, Nethermind and
-Erigon should each reject block 57 having computed
-`0x3a0f5b5c94ac39fe09b3e2eb9c8652eea006e13978f944c7ab337dfa279f927f` against the geth-built
-header's `0xce9b515d34254a9e208d01f875ee5a604440f63e64ae2ac6f8693bd37b416ae5`. The hashes are in
-`workspace/logs/<client>/client-*.log`, not in the simulator output.
+**4. Run the cross-client matrix** (~15 min). Add the other five clients. Expect go-ethereum
+252/252, besu / Nethermind / reth importing the chain and running the full suite with divergences,
+and Erigon / ethrex failing to launch. Per-client totals matter more than the aggregate: a client
+that fails to launch shows `total=1`.
 
-**5. Reproduce the discriminator** (~40 min). Regenerate with
-`-disable-txmods tx-request-eip8282-deposit,tx-request-eip8282-exit`, refill, rerun. Nethermind
-should now import cleanly and side with geth, leaving besu and Erigon on
-`0x9d7ddc9402a930d4fdfdff666943ba52b03c82b4944a5dab8c98958a14448b37` against geth's
-`0xb0d02a82010afea892b76298908f8ce36465ad971f4ba7833b39dc4033a7776c`. This is what shows the
-disagreement is not one client being wrong.
+**5. Read a divergence properly.** A failure means "differs from a geth-generated fixture", not
+"the client is wrong" — see *Adjudicating divergences* below before reporting anything as a client
+bug. Response diffs are in the simulator log as `response differs from expected (-- client, ++
+test)`; client-side rejections are in `workspace/logs/<client>/client-*.log`, not the simulator
+output.
 
-**6. Check the clients against the official BAL vectors** (~45 min). Expect Erigon 1013/1013 and
-besu 1012/1013 — that is, they are conformant to the existing suite and *still* disagree with
-geth, which is the argument in #3261. Recipe in *Running the EEST BAL vectors* below.
+**6. Check a client against the official BAL vectors** (~45 min). Useful for separating "this
+client mis-implements EIP-7928" from "this chain or fixture is unusual" — Erigon scored 1013/1013
+and besu 1012/1013 on the devnet-7 BAL suite. Recipe in *Running the EEST BAL vectors* below.
 
 ## Traps that will cost you time
 
@@ -189,18 +187,50 @@ layout. Throughput is roughly one test per second at `--sim.parallelism 4`.
 codes are enforced, so the pattern looks over-constrained — a standards decision for the
 error-code work in #784, not something to patch here.
 
-Only go-ethereum can import this chain today. besu, Nethermind and Erigon disagree with geth on
-the EIP-7928 block access list of the activation block, reth fails on a state-root mismatch, and
-ethrex on base-fee validation. Tracked in ethereum/execution-specs#3261, which also records that
-besu and Erigon pass 1012/1013 and 1013/1013 of the existing BAL vectors — so this is not
-something those clients are simply failing to implement.
+Two clients cannot launch, for reasons unrelated to this branch: **Erigon** rejects
+`engine_forkchoiceUpdatedV4` with `too many arguments, want at most 2` although the method takes
+three parameters including `custodyColumns`, and **ethrex** fails header validation with
+`Base fee per gas is incorrect`.
+
+An earlier revision produced an activation block only go-ethereum would accept. That was geth's
+EIP-7997 handling — with the deterministic factory contract absent from state, devnet-7 geth
+inserts it at the start of the first Amsterdam block, which no other client does, so the access
+list and state root diverged. Fixed by seeding the contract in genesis, and expected to be gone
+in geth by devnet-8. If you see an activation-block BAL or state-root mismatch again, check the
+genesis alloc first. History in ethereum/execution-specs#3261.
+
+## Adjudicating divergences
+
+**The fixtures are generated from geth, so a failing test means "differs from geth", not "the
+client is wrong".** geth is one implementation; the spec is the authority. Where several clients
+agree against geth, geth is the more likely defect, and the fix is to correct geth (or the spec)
+and regenerate — not to make peers match a geth-shaped fixture. Failures are the expected output
+of this harness; the work is sorting them.
+
+Sort each one into:
+
+1. **client defect** — it disagrees with the spec and with its peers;
+2. **fixture/geth defect** — peers agree with each other against geth; fix upstream, then refill;
+3. **spec silent** — implementations differ and the spec does not say; needs a decision before any
+   fixture can be authoritative.
+
+The current run's divergences are dominated by bucket 3. Roughly 60–70 of each client's failures
+are in `eth_simulateV1`, concentrated in the block-identity fields of simulated blocks (`hash`,
+`stateRoot`, `parentHash`, `blockAccessListHash`, `size`). All three clients that run produce
+*different* `blockAccessListHash` values from each other and from geth for the same simulated
+block, so the access list of a simulated block appears to be pinned down nowhere. Resolving that
+is an execution-apis question, and it is the next thing worth chasing. One concrete secondary
+observation while looking: on `ethSimulate-blockhash-simple`, Nethermind reports the simulated
+block's `gasUsed` as `0x0` while the call it contains used `0x4398`, which looks like bucket 1.
 
 ## Upstream work to absorb
 
 | Upstream | Effect here |
 |---|---|
 | ethereum/hive#1587, #1588 | rebase ethereum/hive#1589 onto master once they merge |
-| ethereum/execution-specs#3261 | when the BAL semantics settle, the six-client matrix becomes meaningful |
+| ethereum/execution-specs#3261 | EIP-8282 BAL vectors, confirmed as a real gap and accepted upstream; test the six clients against them once they exist |
+| geth devnet-8 | drops the EIP-7997 fork-boundary insertion, at which point seeding the contract in genesis is no longer load-bearing |
+| Erigon `forkchoiceUpdatedV4` arity, ethrex base-fee validation | the two remaining launch failures; the matrix goes from four clients to six |
 | #851 | BAL getter semantics; merge in |
 | geth implementing the BAL RPC getters | then add testgen generators — today `eth_getBlockAccessList` and `debug_getRawBlockAccessList` both return `-32601`, so fixtures are impossible |
 | #852 | EIP-8037 two-dimensional gas in tracing; overlaps the callTracer spec, so whichever lands second rebases onto the first |
