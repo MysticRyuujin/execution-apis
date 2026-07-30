@@ -81,11 +81,10 @@ and besu 1012/1013 on the devnet-7 BAL suite. Recipe in *Running the EEST BAL ve
   vector covering EIP-8282 builder-request dequeues. Needs someone who knows the EIP.
 - **#855** — the callTracer spec has two open items: a nod on the optional `debug_traceCall` block
   param, and whether `logs[].index` should stay undefined.
-- **Client-side gaps found here**, none of which have issues filed yet: besu ignores
-  `onlyTopCall`; reth returns `-32001` where the reference returns `-32000` on an out-of-range
-  block; Erigon rejects `engine_forkchoiceUpdatedV4` with `too many arguments, want at most 2`
-  though the method takes three; besu answers an invalid pre-fork BAL payload with a JSON-RPC
-  error rather than an invalid payload status.
+- **Client-side gaps found here.** Filed: Erigon rejects `engine_forkchoiceUpdatedV4`'s third
+  parameter (erigontech/erigon#22896). Not yet filed: besu ignores `onlyTopCall`; reth returns
+  `-32001` where the reference returns `-32000` on an out-of-range block; besu answers an invalid
+  pre-fork BAL payload with a JSON-RPC error rather than an invalid payload status.
 
 ## What it adds on top of `main`
 
@@ -189,8 +188,8 @@ error-code work in #784, not something to patch here.
 
 Two clients cannot launch, for reasons unrelated to this branch: **Erigon** rejects
 `engine_forkchoiceUpdatedV4` with `too many arguments, want at most 2` although the method takes
-three parameters including `custodyColumns`, and **ethrex** fails header validation with
-`Base fee per gas is incorrect`.
+three parameters including `custodyColumns` (erigontech/erigon#22896), and **ethrex** fails header
+validation with `Base fee per gas is incorrect`.
 
 An earlier revision produced an activation block only go-ethereum would accept. That was geth's
 EIP-7997 handling — with the deterministic factory contract absent from state, devnet-7 geth
@@ -230,7 +229,7 @@ block's `gasUsed` as `0x0` while the call it contains used `0x4398`, which looks
 | ethereum/hive#1587, #1588 | rebase ethereum/hive#1589 onto master once they merge |
 | ethereum/execution-specs#3261 | EIP-8282 BAL vectors, confirmed as a real gap and accepted upstream; test the six clients against them once they exist |
 | geth devnet-8 | drops the EIP-7997 fork-boundary insertion, at which point seeding the contract in genesis is no longer load-bearing |
-| Erigon `forkchoiceUpdatedV4` arity, ethrex base-fee validation | the two remaining launch failures; the matrix goes from four clients to six |
+| erigontech/erigon#22896, ethrex base-fee validation | the two remaining launch failures; the matrix goes from four clients to six |
 | #851 | BAL getter semantics; merge in |
 | geth implementing the BAL RPC getters | then add testgen generators — today `eth_getBlockAccessList` and `debug_getRawBlockAccessList` both return `-32601`, so fixtures are impossible |
 | #852 | EIP-8037 two-dimensional gas in tracing; overlaps the callTracer spec, so whichever lands second rebases onto the first |
