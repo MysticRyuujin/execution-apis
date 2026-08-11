@@ -1,14 +1,14 @@
 {
   "number": 57,
-  "hash": "0xb7212b75f7aee6ea273ade86b729851be7c13d833bf7273effed0982181abe96",
+  "hash": "0x7b540ee4934b92955ce706125b5b5741d4f0999ad94ccd0865782e313e99cc5c",
   "timestamp": 570,
-  "blockAccessListHash": "0x5ce0be4619ab6be6bcc6dfd477f9d78fe04c01ba95204cd9566bc8582fbb6b31",
-  "blockAccessListRootOfList": "0x5ce0be4619ab6be6bcc6dfd477f9d78fe04c01ba95204cd9566bc8582fbb6b31",
+  "blockAccessListHash": "0x93109988e35e3fd50c5105d4db6c50fb2501a4e76bd853568d2464645e9be05d",
+  "blockAccessListRootOfList": "0x93109988e35e3fd50c5105d4db6c50fb2501a4e76bd853568d2464645e9be05d",
   "transactions": [
     "0xc10ab59cdb8c8d36b0b5df324a9fb7da40939de185d700eedf4b4a5f7251acf7",
     "0xb2a95a289902c91f0986f79a779241c1338529e5f661bf5d3b1bec51f08e019b",
-    "0x165261c37703062479ddddbdfa11436b5ece62dd0e93da10fa4af1e8af0607fd",
-    "0xaadddbaed853856388083ad644a2163f1b75f70e87ad1558a2e5605138c3fec8"
+    "0x779255994bd6b4a2f5fa50cc309d28b60b16ff18fa25f9aab23cbe2372a82522",
+    "0xa47f3b52ba61f273e0c4ec5ba16ed6ad4069886d5958ba0666d8af462424eef4"
   ],
   "blockAccessList": [
     {
@@ -18,19 +18,19 @@
       "balanceChanges": [
         {
           "blockAccessIndex": "0x1",
-          "postBalance": "0x7b6fb90bf040ea074"
+          "postBalance": "0x7b6fb90bf040e80d0"
         },
         {
           "blockAccessIndex": "0x2",
-          "postBalance": "0x7b6fb90bf04177df3"
+          "postBalance": "0x7b6fb90bf04174937"
         },
         {
           "blockAccessIndex": "0x3",
-          "postBalance": "0x7b6fb90bf0418281b"
+          "postBalance": "0x7b6fb90bf0417f747"
         },
         {
           "blockAccessIndex": "0x4",
-          "postBalance": "0x7b6fb90bf0419bb75"
+          "postBalance": "0x7b6fb90bf04198e89"
         }
       ],
       "nonceChanges": null,
@@ -281,19 +281,19 @@
       "balanceChanges": [
         {
           "blockAccessIndex": "0x1",
-          "postBalance": "0xc097ce7bc90715a564835819b37f1b"
+          "postBalance": "0xc097ce7bc90715a564837ac89b74f3"
         },
         {
           "blockAccessIndex": "0x2",
-          "postBalance": "0xc097ce7bc90715a56479a05de1ec20"
+          "postBalance": "0xc097ce7bc90715a56479da2c0f3088"
         },
         {
           "blockAccessIndex": "0x3",
-          "postBalance": "0xc097ce7bc90715a56478e5d9193f30"
+          "postBalance": "0xc097ce7bc90715a564791b5f1d3c28"
         },
         {
           "blockAccessIndex": "0x4",
-          "postBalance": "0xc097ce7bc90715a564772bb5ae3f14"
+          "postBalance": "0xc097ce7bc90715a564775cf388f49c"
         }
       ],
       "nonceChanges": [

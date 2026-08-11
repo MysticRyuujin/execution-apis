@@ -1,9 +1,9 @@
 {
   "number": 59,
-  "hash": "0x267aa4f61df663157b8238c25e7214c0ed9eaeab33319e4123f06b41b272a3e0",
+  "hash": "0x6e3bd94343c61839a0044d28115f28a7dd4f6a2b2add2335991e9520adcd3d18",
   "timestamp": 590,
-  "blockAccessListHash": "0xe771f25dd00186f2c3b8d548f37378074495c711fe5b353ab928cf69224c2855",
-  "blockAccessListRootOfList": "0xe771f25dd00186f2c3b8d548f37378074495c711fe5b353ab928cf69224c2855",
+  "blockAccessListHash": "0xd829a006931d81f3c6b14e4dd9a909fb76e3d1a9e108d2b869abc47197d9e1b1",
+  "blockAccessListRootOfList": "0xd829a006931d81f3c6b14e4dd9a909fb76e3d1a9e108d2b869abc47197d9e1b1",
   "transactions": [
     "0xb02327053fb189a3631faadd4d4b96ecb286f301fb7867b941a509c29d3e24a7",
     "0x19cbc91713888a88bf3025ac53212aaf65d0dcb710a83ef0d103464d24cacd74",
@@ -18,19 +18,19 @@
       "balanceChanges": [
         {
           "blockAccessIndex": "0x1",
-          "postBalance": "0x7b6fb90bf041d9052"
+          "postBalance": "0x7b6fb90bf041d5fe2"
         },
         {
           "blockAccessIndex": "0x2",
-          "postBalance": "0x7b6fb90bf04229031"
+          "postBalance": "0x7b6fb90bf04225d05"
         },
         {
           "blockAccessIndex": "0x3",
-          "postBalance": "0x7b6fb90bf042416d1"
+          "postBalance": "0x7b6fb90bf0423e3a5"
         },
         {
           "blockAccessIndex": "0x4",
-          "postBalance": "0x7b6fb90bf042468d9"
+          "postBalance": "0x7b6fb90bf042435ad"
         }
       ],
       "nonceChanges": null,
@@ -104,7 +104,7 @@
           "slotChanges": [
             {
               "blockAccessIndex": "0x0",
-              "postValue": "0x8f7aa85011e9a819e0b08a3d646e0876ff02a7d189d104aaf9260d39b7b9f5d0"
+              "postValue": "0x2c0947b32708a79fc87079eeaf420742175d4097d234e39b8380bccc24d53be"
             }
           ]
         }
@@ -148,19 +148,19 @@
       "balanceChanges": [
         {
           "blockAccessIndex": "0x1",
-          "postBalance": "0xc097ce7bc90715a5647385af776b29"
+          "postBalance": "0xc097ce7bc90715a56473b9e2451919"
         },
         {
           "blockAccessIndex": "0x2",
-          "postBalance": "0xc097ce7bc90715a5646f513e76a5c3"
+          "postBalance": "0xc097ce7bc90715a5646f87be014dcb"
         },
         {
           "blockAccessIndex": "0x3",
-          "postBalance": "0xc097ce7bc90715a5646e08b501f183"
+          "postBalance": "0xc097ce7bc90715a5646e3f348c998b"
         },
         {
           "blockAccessIndex": "0x4",
-          "postBalance": "0xc097ce7bc90715a5646dc3b6dca2b2"
+          "postBalance": "0xc097ce7bc90715a5646dfa36674aba"
         }
       ],
       "nonceChanges": [
